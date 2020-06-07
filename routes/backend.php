@@ -7,12 +7,6 @@ Route::prefix('/admin')->group(function () {
     Route::post('/login/submit',        'Auth\Admin\AdminLoginController@login')->name('admin.login.submit');
     Route::get('/logout',               'Auth\Admin\AdminLoginController@adminLogout')->name('admin.logout');
 
-    //------------------------------- Admin Crud -------------------------------
-    Route::resource('admin',               'AdminController');
-
-
-
-
 
     // ------------------- guard/ Middleware admin --------------------------
     Route::group(['middleware' => ['auth:admin', 'permission']], function () {
@@ -35,5 +29,9 @@ Route::prefix('/admin')->group(function () {
             Route::resource('menu',            'MenuController');
             Route::post('menuprocess',          'MenuController@menuProcess')->name('menu.processondominion');
         });
+
+        //------------------------------- Admin Crud -------------------------------
+        Route::resource('admin',               'AdminController');
+
     });
 });
