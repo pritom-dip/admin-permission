@@ -20,9 +20,12 @@
                         <!-- <span class="box-title">All Roles</span> -->
                     </div>
 
+                    @if(App\Model\Permission::roleHasSpecificPermission('role.create'))
+
                     <div class="box-tools pull-right">
                         <a href="{{route('role.create')}}" class="btn btn-xs btn-success pull-left text-white" title="Add New"><i class="fa fa-plus"></i> <span class="text-capitalize">Add Role</span></a>
                     </div>
+                    @endif
                 </div>
 
                 <!-- /.box-header -->
@@ -49,9 +52,19 @@
 
                                 <td>
 
+                                    @if(App\Model\Permission::roleHasSpecificPermission('role.show'))
+
                                     <a href="{{route('role.show', $role->id)}}" class="btn btn-xs btn-success action-view" title="View"><i class="fa fa-eye"></i></a>
 
+                                    @endif
+
+                                    @if(App\Model\Permission::roleHasSpecificPermission('role.edit'))
+
                                     <a href="{{route('role.edit', $role->id)}}" class="btn btn-xs btn-primary action-pencil" title="Edit"><i class="fa fa-pencil"></i></a>
+
+                                    @endif
+
+                                    @if(App\Model\Permission::roleHasSpecificPermission('role.destroy'))
 
                                     <form action="{{route('role.destroy', $role->id)}}" method="POST">
                                         @csrf
@@ -60,6 +73,8 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
+
+                                    @endif
                                 </td>
                             </tr>
 

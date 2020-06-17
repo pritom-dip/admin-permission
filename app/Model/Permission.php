@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Permission extends Model
 {
@@ -40,6 +41,26 @@ class Permission extends Model
         }
 
         return $processList;
+    }
+
+    public static function roleHasSpecificPermission($value){
+
+        $user_permissions   = Auth::user()->role->permission->permissions;
+        $specificPermission = false;
+
+        if( Auth::user()->role->name == 'Super Admin' ){
+            return true;
+        }
+
+        foreach ($user_permissions as $permission) {
+           $permission = json_decode($permission);
+            if($permission->route_name == $value){
+                $specificPermission = true;
+                break;
+            }
+        }
+
+        return $specificPermission;
     }
 
 }
