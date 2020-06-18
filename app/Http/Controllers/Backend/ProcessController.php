@@ -16,8 +16,9 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $processes = Process::paginate(10);
-        return view('admin.system_settings.process.index', compact('processes'));
+        $breadcumbs = $this->breadcumbs('Process', 'index');
+        $processes  = Process::paginate(10);
+        return view('admin.system_settings.process.index', compact('processes', 'breadcumbs'));
     }
 
     /**
@@ -27,8 +28,9 @@ class ProcessController extends Controller
      */
     public function create()
     {
-        $dominions = Dominion::get();
-        return view('admin.system_settings.process.create', compact('dominions'));
+        $breadcumbs = $this->breadcumbs('Process', 'create');
+        $dominions  = Dominion::get();
+        return view('admin.system_settings.process.create', compact('dominions', 'breadcumbs'));
     }
 
     /**
@@ -39,7 +41,8 @@ class ProcessController extends Controller
      */
     public function store(ProcessRequest $request)
     {
-        $process = Process::create($request->all());
+        $data = $this->setProcessRouteNameAttribute($request->all());
+        $process = Process::create($data);
         return redirect()->route('process.index')->with( 'success', 'Process successfully created' );
     }
 
@@ -51,7 +54,8 @@ class ProcessController extends Controller
      */
     public function show( Process $process )
     {
-        return view('admin.system_settings.process.show', compact('process'));
+        $breadcumbs = $this->breadcumbs('Process', 'show');
+        return view('admin.system_settings.process.show', compact('process', 'breadcumbs'));
     }
 
     /**
@@ -62,8 +66,9 @@ class ProcessController extends Controller
      */
     public function edit( Process $process )
     {
-        $dominions = Dominion::get();
-        return view('admin.system_settings.process.edit', compact('process', 'dominions'));
+        $breadcumbs = $this->breadcumbs('Process', 'edit');
+        $dominions  = Dominion::get();
+        return view('admin.system_settings.process.edit', compact('process', 'dominions', 'breadcumbs'));
     }
 
     /**
@@ -75,7 +80,8 @@ class ProcessController extends Controller
      */
     public function update( ProcessRequest $request, Process $process )
     {
-        $process->update($request->all());
+        $data = $this->setProcessRouteNameAttribute($request->all());
+        $process->update($data);
         return redirect()->back()->with('success', 'Process updated successfully');
     }
 
@@ -89,5 +95,11 @@ class ProcessController extends Controller
     {
         $process->delete();
         return redirect()->back()->with('success', 'Process deleted successfully'); 
+    }
+
+    private function setProcessRouteNameAttribute( $request ){
+        $dominion_name = strtolower(Dominion::find($request['dominion_id'])->name);
+        $request['route_name'] = $dominion_name . '.' . strtolower($request['name']); 
+        return $request;
     }
 }

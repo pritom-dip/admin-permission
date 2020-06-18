@@ -15,16 +15,6 @@ class Process extends Model
     	return $this->belongsTo('App\Model\Dominion');
     }
 
-    // public function setNameAttribute($value){
-    //     $this->attributes['name'] = $value;
-    //     $this->setRouteNameAttribute($this->attributes['dominion_id'] );
-    // }
-
-    // private function setRouteNameAttribute( $dominion_id ){ 
-    // 	$dominion_name = strtolower(Dominion::find($dominion_id)->name);
-    // 	$this->attributes['route_name'] = $dominion_name . '.' . strtolower($this->attributes['name']); 
-    // }
-
     public function menus(){
         return $this->hasMany('App\Model\Menu');
     }
